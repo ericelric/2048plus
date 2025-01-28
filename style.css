@@ -266,6 +266,17 @@ h1 {
   justify-content: space-around;
 }
 
+.github-link {
+  position: absolute;
+  bottom: 1rem;
+  color: var(--font-color);
+  text-decoration: none;
+}
+
+.github-link:hover {
+  color: var(--tile-font-color-1);
+}
+
 @media (width >= 40rem) {
   .logo {
     font-size: 5rem;

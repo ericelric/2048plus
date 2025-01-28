@@ -1,5 +1,7 @@
 # 2048plus Game
 
+You can play the game in your browser [here](https://ericelric.github.io/2048plus/).
+
 ## Description
 
 This is a fully functional clone of the classic 2048 game, created as a practice project to improve skills in HTML, CSS, and JavaScript. The project features:
