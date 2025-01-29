@@ -26,6 +26,7 @@ Feel free to explore and play!
 - JavaScript
 - [Theme Switcher](https://github.com/argyleink/gui-challenges/tree/main/theme-switch)
 - [Canvas-Confetti](https://github.com/catdad/canvas-confetti)
+- [Simple Touch Swipe Detection](https://www.kirupa.com/html5/detecting_touch_swipe_gestures.htm)
 
 ## Screenshots
 

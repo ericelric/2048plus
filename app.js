@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Display the modal with the end game message and option to start a new game
   function endGame(text) {
-    document.removeEventListener('keydown', control);
+    removeControlListeners();
     showModal();
     modalText.innerHTML = text;
     buttonYes.onclick = function () {
@@ -335,6 +335,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Group and add event listeners to start the game
+  function addControlListeners() {
+    document.addEventListener('keydown', control);
+    gridDisplay.addEventListener('touchstart', startTouch);
+    gridDisplay.addEventListener('touchmove', moveTouch);
+  }
+
+  // Group and remove event listeners to stop the game
+  function removeControlListeners() {
+    document.removeEventListener('keydown', control);
+    gridDisplay.removeEventListener('touchstart', startTouch);
+    gridDisplay.removeEventListener('touchmove', moveTouch);
+  }
+
   // Start a new game
   buttonNewGame.addEventListener('click', () => startNewGame());
 
@@ -348,8 +362,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadBestScore();
     createGameBoard();
     addColors();
-    document.removeEventListener('keydown', control);
-    document.addEventListener('keydown', control);
+    removeControlListeners();
+    addControlListeners();
   }
 
   // When the user clicks the logo, open the modal with the option to change the game mode
@@ -383,5 +397,56 @@ document.addEventListener('DOMContentLoaded', () => {
   loadBestScore();
   createGameBoard();
   addColors();
-  document.addEventListener('keydown', control);
+  addControlListeners();
+
+  // Detect touch swipe gestures
+  // https://www.kirupa.com/html5/detecting_touch_swipe_gestures.htm
+  let initialX = null;
+  let initialY = null;
+
+  function startTouch(e) {
+    initialX = e.touches[0].clientX;
+    initialY = e.touches[0].clientY;
+  }
+
+  function moveTouch(e) {
+    if (initialX === null) {
+      return;
+    }
+
+    if (initialY === null) {
+      return;
+    }
+
+    let currentX = e.touches[0].clientX;
+    let currentY = e.touches[0].clientY;
+
+    let diffX = initialX - currentX;
+    let diffY = initialY - currentY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      // sliding horizontally
+      if (diffX > 0) {
+        // swiped left
+        updateRows('left');
+      } else {
+        // swiped right
+        updateRows('right');
+      }
+    } else {
+      // sliding vertically
+      if (diffY > 0) {
+        // swiped up
+        updateColumns('up');
+      } else {
+        // swiped down
+        updateColumns('down');
+      }
+    }
+
+    initialX = null;
+    initialY = null;
+
+    e.preventDefault();
+  }
 });
