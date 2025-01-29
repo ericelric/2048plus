@@ -106,7 +106,7 @@ h1 {
   background-color: var(--grid-color);
   border-radius: 12px;
   width: 100%;
-  aspect-ratio: 1/1;
+  aspect-ratio: 1 / 1;
   gap: 3cqi;
   padding: 3cqi;
   margin-bottom: 3rem;
@@ -121,7 +121,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-
+  aspect-ratio: 1 / 1;
 }
 
 .tile-0,
@@ -227,13 +227,15 @@ h1 {
   position: fixed;
   z-index: 2;
   padding-top: 20rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 
 }
 
 .modal-fade {
   visibility: visible;
   opacity: 1;
-  transition: opacity 250ms, background-color 250ms
+  transition: opacity 300ms, background-color 300ms
 }
 
 .modal-inner {

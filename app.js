@@ -12,9 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const buttonNewGame = document.querySelector('.button-new');
 
   // Game variables
-  let gridWidth = 4;
+  let gridWidth = 3;
   let totalTiles = gridWidth * gridWidth;
-  let tiles = [];
+  let tileDivs = [];
+  let tileNumbers = [];
   let bestScore = 0;
   let currentScore = 0;
   let currentGameMode = 2048;
@@ -22,13 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Create the game board with two random numbers
   function createGameBoard() {
-    tiles = [];
+    tileDivs = [];
+    tileNumbers = [];
     gridDisplay.innerHTML = '';
     for (let i = 0; i < totalTiles; i++) {
       const tile = document.createElement('div');
-      tile.innerHTML = 0;
+      tile.innerHTML = '';
       gridDisplay.appendChild(tile);
-      tiles.push(tile);
+      tileDivs.push(tile);
+      tileNumbers.push(0);
     }
     generateNumber();
     generateNumber();
@@ -37,11 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Generate a new number on the board
   function generateNumber() {
-    const emptyTiles = tiles.filter((tile) => tile.innerHTML == 0);
+    // Find indices of tiles with the number 0
+    const emptyTileIndices = tileNumbers
+      .map((num, index) => (num === 0 ? index : null))
+      .filter((index) => index !== null);
 
-    if (emptyTiles.length > 0) {
-      const randomTile =
-        emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+    if (emptyTileIndices.length > 0) {
+      // Pick a random index from the empty tiles
+      const randomIndex =
+        emptyTileIndices[Math.floor(Math.random() * emptyTileIndices.length)];
 
       // Generate a weighted random number
       const randomValue = Math.random() * 100;
@@ -55,6 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
         number = 8; // 2% chance
       }
 
+      // Update both arrays and print number on the board
+      tileNumbers[randomIndex] = number;
+      const randomTile = tileDivs[randomIndex];
       randomTile.innerHTML = number;
       randomTile.classList.add('tile-fade');
     }
@@ -72,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('gameMode')) {
       currentGameMode = parseInt(localStorage.getItem('gameMode'));
     }
+
     if (currentGameMode === 2048) {
       gridWidth = 4;
       totalTiles = gridWidth * gridWidth;
@@ -86,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Update score
+  // Update the current score
   function updateCurrentScore(amount) {
     currentScore += amount;
     currentScoreDisplay.innerHTML = currentScore;
@@ -105,13 +116,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem(`bestScore${currentGameMode}`)) {
       bestScore = parseInt(localStorage.getItem(`bestScore${currentGameMode}`));
       bestScoreDisplay.innerHTML = bestScore;
+    } else {
+      bestScoreDisplay.innerHTML = 0;
     }
   }
 
   // Add tile colors based on values
   function addColors() {
-    tiles.forEach((tile) => {
-      const value = parseInt(tile.innerHTML);
+    tileDivs.forEach((tile) => {
+      const value = parseInt(tile.innerHTML) || 0;
       if (tile.classList.contains('tile-fade')) {
         tile.className = `tile tile-${value} tile-fade`;
         setTimeout(() => {
@@ -127,10 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkForGameOver() {
     let rowCount = 0;
     let columnCount = 0;
-    const temp = [];
-
-    // Fill temp array with all current numbers on the board
-    tiles.forEach((tile) => temp.push(parseInt(tile.innerHTML)));
+    const temp = tileNumbers;
 
     // Select rows
     for (let i = 0; i < temp.length; i += gridWidth) {
@@ -180,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Check for win
   function checkForWin() {
-    if (tiles.some((tile) => tile.innerHTML == currentGameMode)) {
+    if (tileNumbers.some((tile) => tile == currentGameMode)) {
       shape = {
         particleCount: 150,
         startVelocity: 25,
@@ -196,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Display the modal with the end game message and option to start a new game
   function endGame(text) {
     document.removeEventListener('keydown', control);
-    setBestScore();
     showModal();
     modalText.innerHTML = text;
     buttonYes.onclick = function () {
@@ -268,14 +277,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Collect values for the current row
       for (let j = 0; j < gridWidth; j++) {
-        row.push(parseInt(tiles[i + j].innerHTML));
+        row.push(tileNumbers[i + j]);
       }
 
       const updatedRow = moveAndSum(row, direction);
 
       // Update the tiles for the current row
       for (let j = 0; j < gridWidth; j++) {
-        tiles[i + j].innerHTML = updatedRow[j];
+        tileNumbers[i + j] = updatedRow[j];
+        tileDivs[i + j].innerHTML = updatedRow[j] === 0 ? '' : updatedRow[j];
       }
     }
 
@@ -293,14 +303,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Collect values for the current column
       for (let j = 0; j < totalTiles; j += gridWidth) {
-        column.push(parseInt(tiles[i + j].innerHTML));
+        column.push(tileNumbers[i + j]);
       }
 
       const updatedColumn = moveAndSum(column, direction);
 
       // Update the tiles for the current column
       for (let j = 0, k = 0; j < totalTiles; j += gridWidth, k++) {
-        tiles[i + j].innerHTML = updatedColumn[k];
+        tileNumbers[i + j] = updatedColumn[k];
+        tileDivs[i + j].innerHTML =
+          updatedColumn[k] === 0 ? '' : updatedColumn[k];
       }
     }
 
@@ -326,10 +338,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Start a new game
   buttonNewGame.addEventListener('click', () => startNewGame());
 
-  function startNewGame() {
+  function startNewGame(changeMode = false) {
     setBestScore();
     currentScore = 0;
     currentScoreDisplay.innerHTML = currentScore;
+    if (changeMode) changeGameMode();
     loadGameMode();
     gameModeDisplay.innerHTML = currentGameMode;
     loadBestScore();
@@ -344,8 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modalText.innerHTML = `Do you want to switch the game mode to <span>${targetGameMode}</span>?`;
     showModal();
     buttonYes.onclick = function () {
-      changeGameMode();
-      startNewGame();
+      startNewGame((changeMode = true));
       hideModal();
     };
   };
