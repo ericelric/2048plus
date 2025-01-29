@@ -11,6 +11,7 @@ This is a fully functional clone of the classic 2048 game, created as a practice
 - **Light and Dark Mode**: Implemented using the [Theme Switcher](https://github.com/argyleink/gui-challenges/tree/main/theme-switch) from Argyle Ink's GUI Challenges.
 - **Flexible Grid**: Option to change the grid size for an extended version of the game, supporting the 4096 mode.
 - **Celebratory Effect**: Added confetti animation using [canvas-confetti](https://github.com/catdad/canvas-confetti) after winning the game.
+- **Touch Swipe Gestures**: Supports swipe controls on mobile devices for intuitive gameplay. Implemented with [Simple Touch Swipe Detection](https://www.kirupa.com/html5/detecting_touch_swipe_gestures.htm).
 
 Feel free to explore and play!
 
@@ -35,7 +36,3 @@ Light Mode
 
 Dark Mode
 ![Screenshot 2025-01-28 at 14 30 11](https://github.com/user-attachments/assets/ceceb607-2644-482a-aa2c-c23b876d2489)
-
-## TODO
-
-- Add support for swipe gestures on mobile devices.
