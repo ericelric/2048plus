@@ -81,16 +81,17 @@ h1 {
   display: flex;
   gap: 1rem;
   justify-content: center;
+  font-size: 1rem;
 }
 
 .score-container {
   text-align: center;
-  padding: 0.5rem 1rem;
+  padding: 0.5em 1em;
   border-radius: 2px;
   background-color: var(--score-color);
   border: 1px solid var(--score-color);
   color: var(--score-font-color-1);
-  min-width: 6rem;
+  min-width: 6em;
 }
 
 .score-container--best {
@@ -99,11 +100,11 @@ h1 {
 }
 
 .score-title {
-  font-size: 1rem;
+  font-size: 1em;
 }
 
 .score {
-  font-size: 1.25rem;
+  font-size: 1.25em;
 }
 
 .game-grid {
@@ -170,26 +171,37 @@ h1 {
 .tile-128 {
   background-color: #f3ce51;
   color: var(--tile-font-color-2);
+  font-size: 7.5cqi;
 }
 
 .tile-256 {
   background-color: #edc850;
   color: var(--tile-font-color-2);
+  font-size: 7.5cqi;
 }
 
 .tile-512 {
   background-color: #edc53e;
   color: var(--tile-font-color-2);
+  font-size: 7.5cqi;
 }
 
 .tile-1024 {
   background-color: #edc22d;
   color: var(--tile-font-color-2);
+  font-size: 6.5cqi;
 }
 
 .tile-2048 {
   background-color: #ecbb11;
   color: var(--tile-font-color-2);
+  font-size: 6.5cqi;
+}
+
+.tile-4096 {
+  background-color: #ffd41c;
+  color: var(--tile-font-color-2);
+  font-size: 6.5cqi;
 }
 
 .btn {
@@ -304,16 +316,17 @@ h1 {
 
 @media (orientation: portrait) and (height < 700px) {
   .logo {
-    font-size: 3.5rem;
+    font-size: 3rem;
   }
 
   .game-information,
   .game-grid {
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
   }
 
   .button-new,
-  .github-link {
-    font-size: 0.875rem;
+  .github-link,
+  .scores-wrapper {
+    font-size: 0.75rem;
   }
 }
