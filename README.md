@@ -38,5 +38,5 @@ Dark Mode
 ![Screenshot 2025-01-28 at 14 30 11](https://github.com/user-attachments/assets/ceceb607-2644-482a-aa2c-c23b876d2489)
 
 ---
-2048plus Game
+2048plus Game  
 Licensed under the MIT License. See LICENSE file for details.
