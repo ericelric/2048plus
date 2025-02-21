@@ -1,6 +1,6 @@
 # 2048plus Game
 
-You can play the game in your browser [here](https://ericelric.github.io/2048plus/).
+🕹️ You can play the game in your browser [here](https://ericelric.github.io/2048plus/).
 
 ## Description
 
